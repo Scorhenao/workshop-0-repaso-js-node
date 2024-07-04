@@ -67,18 +67,17 @@ class TaskManager {
         this.tasks.forEach(task => {
             const item = document.createElement('li');
             item.textContent = task.description;
-            item.className = task.completed ? 'completed' : Task.completed;
+            item.className = task.completed ? 'completed' : task.completed;
             item.addEventListener('click', () => this.toggleTaskComplete(task.id));
 
             const changeStatus = document.createElement('button');
             changeStatus.textContent = "Change Status";
             changeStatus.className = "changeStatus";
-            changeStatus.addEventListener('click', () => this.toggleTaskComplete(task.id));
 
-            const Status = document.getElementsByClassName("completed");
-            if (Status == "false") {
-                console.log("consegui el estado de la className");
-            }
+            const currentlyStatus = document.getElementsByClassName('completed');
+            const showCurrentlyStatus = document.createElement('span');
+            showCurrentlyStatus.textContent = "Currently Status: " + task.completed;
+            showCurrentlyStatus.className = "currentlyStatus";
 
             const editButton = document.createElement('button');
             editButton.textContent = 'Edit';
@@ -94,7 +93,7 @@ class TaskManager {
                 this.deleteTask(task.id);
             });
 
-            item.append(deleteButton,editButton,changeStatus);
+            item.append(deleteButton,editButton,changeStatus,showCurrentlyStatus);
             taskList.appendChild(item);
         });
     }
