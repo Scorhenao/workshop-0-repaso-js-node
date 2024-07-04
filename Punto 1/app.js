@@ -26,7 +26,7 @@ class TaskManager {
 
     editTask(id) {
         const task = this.tasks.find(task => task.id === id);
-        const description = prompt('Enter new description', task.description);
+        const description = prompt('Ingresa una nueva descripcion', task.description);
         try {
             if (description) {
                 task.description = description;
@@ -34,7 +34,7 @@ class TaskManager {
                 this.renderTasks();
             }
         } catch (error) {
-            console.warn(error); // Corrige el typo de console.warm a console.warn
+            console.warn(error);
         }
     }
 
