@@ -12,8 +12,8 @@ class Task {
 
 class TaskManager {
     constructor() {
-        this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        this.loadTasks();
+        this.tasks = this.loadTasks(); // Carga las tareas desde localStorage
+        this.renderTasks(); // Renderiza las tareas
     }
 
     addTask(description) {
@@ -34,7 +34,7 @@ class TaskManager {
                 this.renderTasks();
             }
         } catch (error) {
-            console.log(error);
+            console.warn(error); // Corrige el typo de console.warm a console.warn
         }
     }
 
@@ -58,7 +58,9 @@ class TaskManager {
     }
 
     loadTasks() {
-        this.renderTasks();
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        // Convierte cada tarea en una instancia de Task
+        return tasks.map(task => new Task(task.id, task.description, task.completed));
     }
 
     renderTasks() {
@@ -67,20 +69,22 @@ class TaskManager {
         this.tasks.forEach(task => {
             const item = document.createElement('li');
             item.textContent = task.description;
-            item.className = task.completed ? 'completed' : task.completed;
-            item.addEventListener('click', () => this.toggleTaskComplete(task.id));
+            item.className = task.completed ? 'completed' : '';
 
             const changeStatus = document.createElement('button');
             changeStatus.textContent = "Change Status";
             changeStatus.className = "changeStatus";
+            changeStatus.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggleTaskComplete(task.id);
+            });
 
-            const currentlyStatus = document.getElementsByClassName('completed');
             const showCurrentlyStatus = document.createElement('span');
-            showCurrentlyStatus.textContent = "Currently Status: " + task.completed;
+            showCurrentlyStatus.textContent = "Current Status: " + (task.completed ? "Completed" : "Not Completed");
             showCurrentlyStatus.className = "currentlyStatus";
 
             const editButton = document.createElement('button');
-            editButton.textContent = 'Edit';
+            editButton.textContent = 'Editar';
             editButton.addEventListener('click', (e) => {
                 e.stopPropagation();
                 this.editTask(task.id);
@@ -89,11 +93,11 @@ class TaskManager {
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Eliminar';
             deleteButton.addEventListener('click', (e) => {
-                e.stopPropagation(); // Evitar que el evento se propague al elemento padre, ¿Por qué? Porque el evento click en el botón también se propaga al elemento li.
+                e.stopPropagation();
                 this.deleteTask(task.id);
             });
 
-            item.append(deleteButton,editButton,changeStatus,showCurrentlyStatus);
+            item.append(deleteButton, editButton, changeStatus, showCurrentlyStatus);
             taskList.appendChild(item);
         });
     }
