@@ -78,17 +78,17 @@ class Task {
         this.id = id;
         this.description = description;
         this.completed = completed;
-    }
+    } /*Este es eñ objeto constructor del cual van a derivar todas las tareas este cuenta con un id, una descripcion y un estado */
 
     toggleComplete() {
-        this.completed = !this.completed;
+        this.completed = !this.completed; /*comparamos la instancia del estado de la tarea y la cambiamos por un estado contrario osea si esta en true, pasa a false y viceversa*/
     }
 }
 
 class TaskManager {
     constructor() {
-        this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        this.loadTasks();
+        this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];//accede a tasks desde localStorage y cambia la data de JSON a un objeto JS si no hay data o da un null o undefined retorna un array vacio
+        this.loadTasks(); //llamamos la funcion de loadTasks
     }
 
     addTask(description) {
@@ -97,64 +97,77 @@ class TaskManager {
         this.tasks.push(task);
         this.saveTasks();
         this.renderTasks();
-    }
+    } //metodo para añadir tareas, recibe como parametro la descripcion de la tarea
 
     deleteTask(id) {
-        this.tasks = this.tasks.filter(task => task.id !== id);
-        this.saveTasks();
-        this.renderTasks();
-    }
+        this.tasks = this.tasks.filter(task => task.id !== id);/*verifica si tiene data, accede al ultimo elemento y obtiene su id luego aumenta a 1 para obtener e proximo, si this.tasks esta vacio o es 0 asigna 1*/
+        this.saveTasks();// llamamos la funcion de saveTasks
+        this.renderTasks();// llamamos la funcion de renderTasks
+    } //metodo para borrar tareas, recibe como parametro el id de la tarea
 
     toggleTaskComplete(id) {
-        const task = this.tasks.find(task => task.id === id);
+        const task = this.tasks.find(task => task.id === id);//busca una coincidencia en la instacia segun el objeto de tareas
         if (task) {
-            task.toggleComplete();
-            this.saveTasks();
-            this.renderTasks();
+            task.toggleComplete();// llamamos la funcion toggleComplete
+            this.saveTasks();// llamamos la funcion saveTasks
+            this.renderTasks(); // llamamos la funcion renderTasks
         }
-    }
+    } //metodo para cambia estado de la tarea, recibe como parametro el id de la tarea
 
     saveTasks() {
-        localStorage.setItem('tasks', JSON.stringify(this.tasks));
-    }
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));// Agregamos al local storage el objeto de las tareas parseado a JSON
+    } //metodo para guardar las tareas, no necesitamos un parametro
 
     loadTasks() {
-        this.renderTasks();
-    }
+        this.renderTasks(); //llamamos la funcion renderTasks
+    } //metodo para cargar las tareas en la vista del usuario
 
     renderTasks() {
-        const taskList = document.getElementById('task-list');
-        taskList.innerHTML = '';
+        const taskList = document.getElementById('task-list');// objetemos el elemento de html con el id task-list
+        taskList.innerHTML = ''; // declaramos lo que vamos a agregar al elemento taskList de html
         this.tasks.forEach(task => {
-            const item = document.createElement('li');
-            item.textContent = task.description;
-            item.className = task.completed ? 'completed' : '';
-            item.addEventListener('click', () => this.toggleTaskComplete(task.id));
+            const item = document.createElement('li');// creamos una variable item que sea una etiqueta li de html
+            item.textContent = task.description;// agregamos al item una instancia de la descripcion de cada tarea
+            item.className = task.completed ? 'completed' : '';// Agregamos una clase al elemento item en el html que sea completed y tenga un elemento vacio
+            item.addEventListener('click', () => this.toggleTaskComplete(task.id));// item va a tener un evento click donde llama la funcion toggleTaskComplete al hacerlo
 
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Eliminar';
+            const deleteButton = document.createElement('button');// creamos una variable que contenga el elemento button de html
+            deleteButton.textContent = 'Eliminar';// texto que debe tener el elemento button de html
             deleteButton.addEventListener('click', (e) => {
                 e.stopPropagation(); // Evitar que el evento se propague al elemento padre, ¿Por qué? Porque el evento click en el botón también se propaga al elemento li.
-                this.deleteTask(task.id);
+                this.deleteTask(task.id);// llamamos la funcion deleteTask
             });
 
-            item.appendChild(deleteButton);
-            taskList.appendChild(item);
+            item.appendChild(deleteButton);// agregamos como hijo en el item el deleteButton
+            taskList.appendChild(item);//agregamos como hijo el item al taskList
         });
-    }
+    } //metodo para agregar las tareas en la vista dl usuario, no necesitamos parametros
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Este bloque de código se ejecuta cuando el documento HTML ha sido completamente cargado y analizado.
+
+    // Crear una nueva instancia de TaskManager.
     const taskManager = new TaskManager();
 
+    // Escuchar el evento 'click' en el elemento con ID 'add-task'.
     document.getElementById('add-task').addEventListener('click', () => {
+        // Cuando se hace clic en el botón con ID 'add-task', ejecutar este bloque de código:
+
+        // Obtener el valor del campo de entrada con ID 'new-task'.
         const newTask = document.getElementById('new-task').value;
+
+        // Verificar si el valor de 'newTask' no está vacío o es null/undefined.
         if (newTask) {
+            // Si 'newTask' tiene contenido, llamar al método addTask del objeto taskManager y pasarle 'newTask'.
             taskManager.addTask(newTask);
+
+            // Limpiar el campo de entrada con ID 'new-task' después de agregar la tarea.
             document.getElementById('new-task').value = '';
         }
     });
 });
+
 ```
 3. **Ejecución**: Probar la aplicación en un navegador y realizar las siguientes acciones:
     - Probar funcionalidad del codigo. Si encuentras errores, depurar el código, corregirlos y generar un informe de los errores encontrados y como los corregiste.
