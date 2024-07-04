@@ -268,18 +268,28 @@ Como usuario, quiero una aplicación que consuma datos de una API pública, para
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Definición del juego de caracteres -->
     <meta charset="UTF-8">
+    <!-- Configuración de la escala inicial y tamaño de la ventana de visualización -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título de la página -->
     <title>Consumiendo API con JSONPlaceholder</title>
+    <!-- Enlace al archivo de estilos externo -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Contenedor principal de la aplicación -->
     <div id="app">
+        <!-- Título principal -->
         <h1>Listado de Posts</h1>
+        <!-- Botón para cargar los posts -->
         <button id="fetch-posts">Cargar Posts</button>
+        <!-- Lista donde se mostrarán los posts -->
         <ul id="post-list"></ul>
+        <!-- Contenedor para mostrar mensajes de error -->
         <div id="error-message"></div>
     </div>
+    <!-- Inclusión del archivo JavaScript -->
     <script src="app.js"></script>
 </body>
 </html>
@@ -288,38 +298,58 @@ Como usuario, quiero una aplicación que consuma datos de una API pública, para
 #### JavaScript
 
 ```javascript
+// Agregar un event listener al elemento con ID 'fetch-posts' que escucha el evento 'click'
 document.getElementById('fetch-posts').addEventListener('click', () => {
+    // Cuando se hace clic en el botón con ID 'fetch-posts', se llama a la función fetchPosts
     fetchPosts();
 });
 
+// Definir una función fetchPosts usando una arrow function
 const fetchPosts = () => {
+    // Llamar a la función fetch para realizar una solicitud GET a la API JSONPlaceholder
     fetch('https://jsonplaceholder.typicode.com/posts')
+        // Manejar la respuesta de la solicitud fetch usando promesas
         .then(response => {
+            // Verificar si la respuesta no es exitosa
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
+            // Convertir la respuesta a formato JSON
             return response.json();
         })
+        // Manejar el JSON obtenido de la respuesta exitosa
         .then(posts => {
+            // Llamar a la función displayPosts y pasarle los posts obtenidos
             displayPosts(posts);
         })
+        // Capturar cualquier error ocurrido durante la solicitud o conversión de respuesta
         .catch(error => {
+            // Llamar a la función displayError y pasarle el error capturado
             displayError(error);
         });
 };
 
+// Definir una función displayPosts para mostrar los posts en el documento HTML
 const displayPosts = (posts) => {
+    // Obtener el elemento <ul> con ID 'post-list'
     const postList = document.getElementById('post-list');
+    // Limpiar el contenido existente de postList
     postList.innerHTML = '';
+    // Iterar sobre cada post y crear un <li> para cada uno
     posts.forEach(post => {
         const listItem = document.createElement('li');
+        // Asignar el texto del <li> con el título del post
         listItem.textContent = `Title: ${post.title}`;
+        // Agregar el <li> al elemento <ul> postList
         postList.appendChild(listItem);
     });
 };
 
+// Definir una función displayError para mostrar mensajes de error en el documento HTML
 const displayError = (error) => {
+    // Obtener el elemento con ID 'error-message'
     const errorMessage = document.getElementById('error-message');
+    // Mostrar el mensaje de error en el elemento
     errorMessage.textContent = `Error: ${error.message}`;
 };
 ```
