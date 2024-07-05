@@ -436,7 +436,7 @@ const products = [
 
 1. **Visualización de Productos**:
    - La aplicación debe mostrar una lista de productos en la página. Puedes interactuar con el DOM o con la consola del navegador.
-   - **Concepto de JavaScript aplicado**: Manipulación del DOM, forEach.
+   - **Concepto de JavaScript aplicado**: Manipulación del DOM, `forEach`.
 
 2. **Calcular el Precio Total**:
    - La aplicación debe calcular y mostrar el precio total de todos los productos utilizando el método `reduce`.
