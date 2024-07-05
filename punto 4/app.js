@@ -97,6 +97,5 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Element with ID "search-form" not found.');
     }
-
     fetchProducts();
 });
