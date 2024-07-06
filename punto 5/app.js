@@ -7,11 +7,12 @@ const products = [
     { id: 6, name: 'Sneakers', category: 'Clothing', price: 80, stock: 30 },
     { id: 7, name: 'Backpack', category: 'Accessories', price: 40, stock: 25 },
     { id: 8, name: 'Watch', category: 'Accessories', price: 60, stock: 20 },
-    { id: 9, name: 'Sunglasses', category: 'Accessories', price: 30, stock: 35 }
+    { id: 9, name: 'Sunglasses', category: 'Accessories', price: 30, stock: 35 },
+    { id: 10, name: 'Keyboard', category: 'Electronics', price: 200, stock: 0 }
 ];
 
 class GestorProducts {
-    constructor() {
+    constructor(products) {
         this.products = products;
     }
 
@@ -87,17 +88,36 @@ class GestorProducts {
         });
     }
 
+    productsNames() {
+        const productNames = products.map(product => product.name);
+        console.log(productNames);
+    }
+
     loadProducts() {
         try {
             this.renderProducts();
             this.totalPriceProducts();
             this.filterByCategory();
             this.filterByName();
+            this.productsNames();
         } catch (error) {
             console.warn(error);
         }
     }
 }
 
-const gestorProducts = new GestorProducts();
+function checkAvailability () {
+    const availableProducts = [];
+    products.every(product => {
+        if (product.stock > 0) {
+            availableProducts.push(product);
+            return true; // Continuar iterando
+        } else {
+            return false; // Detener iteración
+        }
+    });
+    return availableProducts;
+} 
+const productsChecked = checkAvailability();
+const gestorProducts = new GestorProducts(productsChecked);
 gestorProducts.loadProducts();
