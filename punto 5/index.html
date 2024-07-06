@@ -11,11 +11,9 @@
 
     <header>
         <nav class="navbar d-flex gap-2 justify-content-center w-100 shadow-lg navbar-expand-sm navbar-brand bg-dark-subtle">
-            <div>
-                <h3>filtrar por categoria: </h3>
-            </div>
-            <div>
-                <form class="d-flex my-2 my-lg-0 gap-1" id="filter-form">
+            <div class="text-center">
+                <h3 class="text-decoration-underline">filtrar por categoria: </h3>
+                <form class="d-flex my-2 my-lg-0 gap-2 bg-body-secondary rounded p-3" id="filter-form">
                     <select name="" id="category-filter">
                         <option value="Todos">Todos</option>
                         <option value="Accessories">Accessories</option>
@@ -27,8 +25,16 @@
                     </button>
                 </form>
             </div>
+            <div class="text-center">
+                <h3 class="text-decoration-underline">filtrar por nombre: </h3>
+                <form class="d-flex my-2 my-lg-0 gap-2 bg-body-secondary rounded p-3" id="filter-form-name">
+                    <input type="text" placeholder="Buscar:">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="search-btn">
+                        Search
+                    </button>
+                </form>
+            </div>
         </nav>
-        
     </header>
 
     <section class="container text-center mt-5">
