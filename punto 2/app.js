@@ -1,40 +1,40 @@
-class Notes{ // Esta clase sirve para crear las notas
-    constructor(id, description, important = false) { // El constructor crea las variables y les da un valor false por defecto que mas adelate sera cambiado
-        this.id = id; // Al momento de ingresar información el id tomara un numero y se volvera true
-        this.description = description; // aca igual
-        this.important = important; // Este cambiara su estado a true cuando se presione el boton de imporante
+class Notes {
+    constructor(id, description, important = false) {
+        this.id = id;
+        this.description = description;
+        this.important = important;
     }
 
-    toggleImportant(){ // Esta funcion sirve para cambiar el estado de false en important
+    toggleImportant() {
         this.important = !this.important;   
     }
 }
 
-class NotesManager { // Esta clase sirve para controlar el ingreso, edicion, eliminación y marcado de importante a las notas
+class NotesManager {
     constructor() {
-        this.notes = JSON.parse(localStorage.getItem('notes')) || []; // Esta linea busca dentro del localstore la nota y la carga en la pagina, de lo contrario regresa un objeto vacio
+        this.notes = JSON.parse(localStorage.getItem('notes')) || [];
         this.loadNotes();
     }
 
-    addNote(description) { // esta funcion sirve para agregar las notas
-        const id = this.notes.length ? this.notes[this.notes.length - 1].id + 1 : 1; // esta linea de codigo revisa si notes tiene un contenido, de ser así le agregara un +1 al id, si no lo dejara como está
-        const note = new Notes(id,description); // Esta lina hace que se cree una nueva nota con el contenido de la descripcion y un nuevo id
-        this.notes.push(note); // en esta linea se agrega la información a la instancia de notas
-        this.saveNotes(); // en esta linea se guarda las notas
-        this.renderNotes(); // en esta linea se carga la nota en la pagina
+    addNote(description) {
+        const id = this.notes.length ? this.notes[this.notes.length - 1].id + 1 : 1;
+        const note = new Notes(id, description);
+        this.notes.push(note);
+        this.saveNotes();
+        this.renderNotes();
     }
 
-    editNote(id) { // Esta funcion sirve para editar las notas
-        const note = this.notes.find(note => note.id === id);  // esta linea de codigo, lo que hara es buscar en la estancia de notes una nota que tenga el mismo id que el id elegido
-        const description = prompt ('Ingresa una nueva nota', note.description) // aca preguntaremos por ingersar la nota que editara la que habia anteriormente
-        try { // este try procuara cumplir con la orden
+    editNote(id) {
+        const note = this.notes.find(note => note.id === id);
+        const description = prompt('Ingresa una nueva nota', note.description);
+        try {
             if (description) {
                 note.description = description;
                 this.saveNotes();
                 this.renderNotes();
             }
-        } catch (error) { // este catch nos mostrara si hubo algun error
-            console.error('Se produjo un error', error)
+        } catch (error) {
+            console.error('Se produjo un error', error);
         }
     }
 
@@ -71,16 +71,16 @@ class NotesManager { // Esta clase sirve para controlar el ingreso, edicion, eli
 
             const importantButton = document.createElement('button');
             importantButton.textContent = 'Importante';
-            importantButton.classList = 'btn','btn-success';
+            importantButton.classList.add('btn', 'btn-success');
             importantButton.addEventListener('click', (e) =>{
                 e.stopPropagation();
                 this.toggleNoteImportant(note.id);
-                
+                item.className = note.important ? 'important' : '';
             });
 
             const editButton = document.createElement('button');
             editButton.textContent = 'Editar';
-            editButton.classList = 'btn','btn-primary';
+            editButton.classList.add('btn', 'btn-primary');
             editButton.addEventListener('click', (e) => {
                 e.stopPropagation();
                 this.editNote(note.id);
@@ -88,7 +88,7 @@ class NotesManager { // Esta clase sirve para controlar el ingreso, edicion, eli
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Eliminar';
-            deleteButton.classList = 'btn','btn-danger';
+            deleteButton.classList.add('btn', 'btn-danger');
             deleteButton.addEventListener('click', (e) => {
                 e.stopPropagation();
                 this.deleteNote(note.id);
@@ -102,8 +102,6 @@ class NotesManager { // Esta clase sirve para controlar el ingreso, edicion, eli
     }
 }
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const noteManager = new NotesManager();
 
@@ -113,5 +111,5 @@ document.addEventListener('DOMContentLoaded', () => {
             noteManager.addNote(newNote);
             document.getElementById('new-note').value = '';
         }
-    })
+    });
 });
