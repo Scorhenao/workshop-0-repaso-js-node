@@ -15,9 +15,11 @@ class GestorProducts {
         this.products = products;
     }
 
-    renderProducts() {
+    renderProducts(filteredProducts = this.products) {
         const productsContainer = document.getElementById('products-container');
-        products.forEach(product => {
+        productsContainer.innerHTML = ''; // Clear existing products
+
+        filteredProducts.forEach(product => {
             const productElement = document.createElement('div');
             productElement.classList.add("col", "w-50", "bg-gradient", "m-5", "p-2", "rounded", "shadow-lg");
             productElement.innerHTML = `
@@ -57,22 +59,30 @@ class GestorProducts {
     
                 if (filteredProducts.length > 0) {
                     // Mostrar productos filtrados
-                    filteredProducts.forEach(product => {
-                        const productElement = document.createElement('div');
-                        productElement.classList.add("col", "w-50", "bg-gradient", "m-5", "p-2", "rounded", "shadow-lg");
-                        productElement.innerHTML = `
-                            <h3>${product.name}</h3>
-                            <p>Category: ${product.category}</p>
-                            <p>Price: ${product.price}</p>
-                            <p>Stock: ${product.stock}</p>
-                            <button class="btn btn-primary">Comprar</button>
-                        `;
-                        containerProducts.appendChild(productElement);
-                    });
+                    this.renderProducts(filteredProducts);
                 } else {
                     // Mostrar mensaje de error si no hay productos en la categoría
                     containerProducts.innerHTML = "No hay productos en esta categoría";
                 }
+            }
+        });
+    }
+
+    filterByName(){
+        const form = document.getElementById("filter-form-name");
+        const containerProducts = document.getElementById("products-container");
+    
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const searchValue = form.querySelector('input[type="text"]').value.toLowerCase();
+            const foundProduct = this.products.find(product => product.name.toLowerCase().includes(searchValue));
+    
+            containerProducts.innerHTML = ''; // Limpiar productos existentes
+    
+            if (foundProduct) {
+                this.renderProducts([foundProduct]);
+            } else {
+                containerProducts.innerHTML = "No hay productos con ese nombre";
             }
         });
     }
@@ -82,6 +92,7 @@ class GestorProducts {
             this.renderProducts();
             this.totalPriceProducts();
             this.filterByCategory();
+            this.filterByName();
         } catch (error) {
             console.warn(error);
         }
